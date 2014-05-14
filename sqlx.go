@@ -654,7 +654,12 @@ func Selectf(q Queryer, dest interface{}, query string, args ...interface{}) {
 // Get will return sql.ErrNoRows like row.Scan would.
 func Get(q Queryer, dest interface{}, query string, args ...interface{}) error {
 	r := q.QueryRowx(query, args...)
-	return r.StructScan(dest)
+	switch dest := dest.(type) {
+	default:
+		return r.StructScan(dest)
+	case *int:
+		return r.Scan(dest)
+	}
 }
 
 // LoadFile exec's every statement in a file (as a single call to Exec).
