@@ -659,6 +659,8 @@ func Get(q Queryer, dest interface{}, query string, args ...interface{}) error {
 		return r.StructScan(dest)
 	case *int:
 		return r.Scan(dest)
+	case *string:
+		return r.Scan(dest)
 	}
 }
 
